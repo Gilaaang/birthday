@@ -234,11 +234,6 @@
         style="touch-action: none; cursor: grab; background: #a43c12; color: #ffffff; border-color: #a43c12;">
         <span class="material-symbols-outlined" id="music-toggle-icon">play_arrow</span>
     </button>
-    <!-- Music Autoplay Hint (shown only if the browser blocks autoplay) -->
-    <div id="music-hint"
-        class="fixed top-20 left-1/2 -translate-x-1/2 z-[70] bg-primary text-on-primary text-sm font-label-md px-4 py-2 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-500">
-        🎵 Ketuk layar untuk memutar musik
-    </div>
     <!-- Swipe Navigation Controls -->
     <div class="nav-overlay">
         <button class="nav-button active:scale-90" disabled="" id="prev-btn">
@@ -591,17 +586,12 @@
             });
         })(musicToggle);
 
-        const musicHint = document.getElementById('music-hint');
-
         function startMusic() {
             bgMusic.play().then(() => {
                 musicToggleIcon.textContent = 'pause';
             }).catch(() => {
-                // Autoplay blocked by the browser; show a hint and start on first user interaction instead.
-                musicHint.style.opacity = '1';
-
+                // Autoplay blocked; start on first user interaction instead.
                 const resume = () => {
-                    musicHint.style.opacity = '0';
                     bgMusic.play().then(() => {
                         musicToggleIcon.textContent = 'pause';
                     }).catch(() => { });
