@@ -155,6 +155,59 @@
             flex-shrink: 0;
             padding: 0 24px;
             box-sizing: border-box;
+            opacity: 0;
+            transform: scale(0.92) translateY(12px);
+            transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1), transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            filter: blur(4px);
+        }
+
+        .swipe-section.section-active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+        }
+
+        /* Sequenced reveal: photo, then typed text */
+        .reveal-photo {
+            opacity: 0;
+            transform: scale(0.85) translateY(16px);
+            transition: opacity 1.4s cubic-bezier(0.23, 1, 0.32, 1), transform 1.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reveal-photo.show {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .gallery-item.reveal-photo {
+            transition: opacity 2.2s cubic-bezier(0.23, 1, 0.32, 1), transform 2.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reveal-photo.no-transition {
+            transition: none !important;
+        }
+
+
+        .typewriter-text .type-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            margin-left: 2px;
+            vertical-align: -0.15em;
+            background: currentColor;
+            animation: cursor-blink 0.8s step-end infinite;
+        }
+
+        @keyframes cursor-blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
 
         .nav-overlay {
@@ -257,7 +310,8 @@
             <!-- SECTION 1: HOME -->
             <section class="swipe-section flex flex-col items-center">
                 <div class="max-w-[480px] w-full mx-auto flex flex-col items-center">
-                    <div class="relative w-full aspect-square mb-8 rounded-[32px] overflow-hidden glass-card p-4">
+                    <div class="relative w-full aspect-square mb-8 rounded-[32px] overflow-hidden glass-card p-4 reveal-photo"
+                        id="s1-photo">
                         <div class="w-full h-full rounded-[24px] overflow-hidden bg-cover bg-center relative"
                             style="background-image: url('foto/f5.jpeg')">
                             <div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
@@ -276,11 +330,11 @@
                         </div>
                     </div>
                     <div class="text-center mb-10">
-                        <h1 class="font-display-lg text-display-lg text-primary mb-2 leading-tight">
-                            Happy Birthday,<br>Yulia!
+                        <h1 class="font-display-lg text-display-lg text-primary mb-2 leading-tight typewriter-text"
+                            id="s1-title" data-typewriter="Happy Birthday,<br>Yulia!">
                         </h1>
-                        <p class="font-body-md text-on-surface-variant max-w-[280px] mx-auto">
-                            May you always be healthy and have a long life.
+                        <p class="font-body-md text-on-surface-variant max-w-[280px] mx-auto typewriter-text"
+                            id="s1-subtitle" data-typewriter="May you always be healthy and have a long life.">
                         </p>
                     </div>
                 </div>
@@ -288,7 +342,7 @@
             <!-- SECTION 2: UCAPAN 1 -->
             <section class="swipe-section flex flex-col items-center">
                 <div class="glass-card birthday-gradient-2 quote-card-pink p-6 rounded-[24px] relative overflow-hidden">
-                    <div class="flex flex-col items-start mb-4">
+                    <div class="flex flex-col items-start mb-4 reveal-photo" id="s2-photo">
                         <span class="material-symbols-outlined text-secondary/40 mb-2" data-icon="celebration"
                             style="font-variation-settings: 'FILL' 1;">format_quote</span>
                         <div
@@ -300,12 +354,11 @@
                             </div>
                         </div>
                     </div>
-                    <p class="font-quote-italic text-[15px] text-on-surface leading-relaxed mb-6">
-                        "Untuk orang yang pernah menjadi favorite aku dulu, selamat ulang tahun. Semoga makin sabar dan
-                        kuat ya, semoga diberikan rezeki yang lancar, semoga bisa dapetin hal yang selama ini
-                        diperjuangin, dan Semoga menjadi pribadi yang lebih baik lagi dari sebelumnya"
+                    <p class="font-quote-italic text-[16px] text-on-surface leading-relaxed mb-6 typewriter-text"
+                        id="s2-quote"
+                        data-typewriter="&quot;Selamat ulang tahun ya sayang. Semoga panjang umur, sehat selalu, dilancarkan rezekinya, dan dimudahkan segala urusannya. Dan Semoga juga kamu bisa menjadi pribadi yang lebih baik lagi dari sebelumnya ya, pokoknya jangan pernah cape buat perbaiki diri untuk jadi lebih baik.&quot;">
                     </p>
-                    <div class="flex items-center justify-end">
+                    <div class="flex items-center justify-end reveal-photo" id="s2-icon-end">
                         <span class="material-symbols-outlined text-secondary" data-icon="auto_awesome"
                             style="font-variation-settings: 'FILL' 1;">favorite</span>
                     </div>
@@ -315,7 +368,7 @@
             <section class="swipe-section flex flex-col items-center">
                 <div
                     class="glass-card birthday-gradient-2 quote-card-white p-6 rounded-[24px] relative overflow-hidden">
-                    <div class="flex flex-col items-start mb-4">
+                    <div class="flex flex-col items-start mb-4 reveal-photo" id="s3-photo">
                         <span class="material-symbols-outlined text-secondary/40 mb-2" data-icon="celebration"
                             style="font-variation-settings: 'FILL' 1;">celebration</span>
                         <div
@@ -327,11 +380,11 @@
                             </div>
                         </div>
                     </div>
-                    <p class="font-quote-italic text-[15px] text-on-surface leading-relaxed mb-6">
-                        "Aku berharap kamu tumbuh, bahagia, dan memiliki kehidupan yang memperlakukanmu dengan baik.
-                        Walaupun kita sudah selesai tapi percayalah aku selalu mendukungmu dari kejauhan"
+                    <p class="font-quote-italic text-[15px] text-on-surface leading-relaxed mb-6 typewriter-text"
+                        id="s3-quote"
+                        data-typewriter="&quot;Aku berharap tahun ini akan jadi lebih baik dari tahun sebelumnya dan aku berharap apa yang kamu perjuangin selama ini dapat tercapai ditahun ini.&quot;">
                     </p>
-                    <div class="flex items-center justify-end">
+                    <div class="flex items-center justify-end reveal-photo" id="s3-icon-end">
                         <span class="material-symbols-outlined text-secondary" data-icon="auto_awesome"
                             style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
                     </div>
@@ -342,7 +395,7 @@
                 <div class="grid grid-cols-2 gap-3 w-full">
                     <!-- Memory 1 -->
                     <div
-                        class="memory-item glass-card rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(112,79,153,0.1)] transition-transform hover:scale-[1.02] duration-300">
+                        class="memory-item glass-card rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(112,79,153,0.1)] transition-transform hover:scale-[1.02] duration-300 reveal-photo gallery-item">
                         <div class="aspect-[3/4] bg-surface-container-high relative overflow-hidden">
                             <img class="w-full h-full object-cover"
                                 data-alt="A warm, candid photo of a group of friends laughing together at a summer sunset party. The scene is filled with soft, golden-hour light and hints of orange and pink. The style is soft-focus and joyful, echoing a magical celebration theme with a high-end editorial feel."
@@ -351,7 +404,7 @@
                     </div>
                     <!-- Memory 2 -->
                     <div
-                        class="memory-item glass-card rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(112,79,153,0.1)] transition-transform hover:scale-[1.02] duration-300">
+                        class="memory-item glass-card rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(112,79,153,0.1)] transition-transform hover:scale-[1.02] duration-300 reveal-photo gallery-item">
                         <div class="aspect-[3/4] bg-surface-container-high relative overflow-hidden">
                             <img class="w-full h-full object-cover"
                                 data-alt="A beautiful closeup of a multi-tiered birthday cake with pastel pink and lilac frosting, decorated with small gold edible sparkles. Soft bokeh lights in the background create a dreamlike atmosphere. The lighting is warm and inviting, emphasizing the celebration and joyful mood."
@@ -360,7 +413,7 @@
                     </div>
                     <!-- Memory 3 -->
                     <div
-                        class="memory-item glass-card rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(112,79,153,0.1)] transition-transform hover:scale-[1.02] duration-300">
+                        class="memory-item glass-card rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(112,79,153,0.1)] transition-transform hover:scale-[1.02] duration-300 reveal-photo gallery-item">
                         <div class="aspect-[3/4] bg-surface-container-high relative overflow-hidden">
                             <img class="w-full h-full object-cover"
                                 data-alt="A warm, candid photo of a group of friends laughing together at a summer sunset party. The scene is filled with soft, golden-hour light and hints of orange and pink. The style is soft-focus and joyful, echoing a magical celebration theme with a high-end editorial feel."
@@ -369,7 +422,7 @@
                     </div>
                     <!-- Memory 4 -->
                     <div
-                        class="memory-item glass-card rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(112,79,153,0.1)] transition-transform hover:scale-[1.02] duration-300">
+                        class="memory-item glass-card rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(112,79,153,0.1)] transition-transform hover:scale-[1.02] duration-300 reveal-photo gallery-item">
                         <div class="aspect-[3/4] bg-surface-container-high relative overflow-hidden">
                             <img class="w-full h-full object-cover"
                                 data-alt="A beautiful closeup of a multi-tiered birthday cake with pastel pink and lilac frosting, decorated with small gold edible sparkles. Soft bokeh lights in the background create a dreamlike atmosphere. The lighting is warm and inviting, emphasizing the celebration and joyful mood."
@@ -379,9 +432,9 @@
                 </div>
             </section>
             <!-- SECTION 5: CATATAN -->
-            <section class="swipe-section flex flex-col items-center">
+            <section class="swipe-section flex flex-col items-center justify-center">
                 <!-- Shared Note / Card style memory -->
-                <div class="rounded-xl p-6 mt-4 flex flex-col justify-center relative overflow-hidden shadow-md bg-[#fdfd96] -rotate-1"
+                <div class="rounded-xl p-6 flex flex-col justify-center relative overflow-hidden shadow-md bg-[#fdfd96] -rotate-1"
                     style="clip-path: polygon(0% 0%, 5% 2%, 10% 0%, 15% 3%, 20% 0%, 25% 2%, 30% 0%, 35% 3%, 40% 0%, 45% 2%, 50% 0%, 55% 3%, 60% 0%, 65% 2%, 70% 0%, 75% 3%, 80% 0%, 85% 2%, 90% 0%, 95% 3%, 100% 0%, 100% 100%, 0% 100%);">
                     <span
                         class="material-symbols-outlined absolute -right-4 -bottom-4 text-primary opacity-10 text-[120px]"
@@ -389,14 +442,11 @@
                     <h4 class="font-headline-md text-on-surface mb-2">A Note for You</h4>
                     <p
                         class="text-[15px] font-body-md text-on-surface-variant italic leading-[2rem] tracking-wide pt-1">
-                        "Jujur aku kecewa banget sama kamu setelah kejadian kemarin, tapi gapapa kok mau gimana lagi
-                        emang bukan aku orang yang kamu mau. Kamu lebih mentingin perasaan teman kamu itu daripada
-                        perasaan aku, Lagian aku liat kamu kangen banget sama dia sampai keasyikan gitu. Jadi gausah
-                        gengsi ya jadi orang, ungkapin perasaan kamu deh keburu dia diambil orang. Semoga jodoh ya
-                        kalian, makasih untuk semuanya dan bahagia selalu ya.
+                        "Banyak hal yang membuatmu runtuh, tapi juga banyak hal yang sudah membuatmu tumbuh. Jadi tetap
+                        semangat ya dan jangan pernah menyerah untuk tumbuh menjadi lebih baik."
                         <br>
                         <br>
-                        Oiya aku beliin sesuatu buat kamu, ditunggu aja ya dan semoga kamu suka"
+                        Oiya aku beliin sesuatu buat kamu, ditunggu aja ya dan semoga kamu suka.
                     </p>
                 </div>
             </section>
@@ -458,11 +508,125 @@
         const sectionLabel = document.getElementById('section-label');
         const labels = ['Home', 'Wishes', 'Wishes', 'Gallery', 'Note', 'Close'];
 
+        const sections = document.querySelectorAll('.swipe-section');
         let currentIndex = 0;
         const totalSections = 6;
 
+        // Sequenced "photo appears, then text types out" intro for sections 1 & 2
+        function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Snap an element back to its hidden state with no transition, so it never
+        // stays visible (mid fade-out) from a previous run before the next reveal.
+        function hideInstantly(el) {
+            el.classList.add('no-transition');
+            el.classList.remove('show');
+            void el.offsetWidth; // force reflow so the transition re-enables cleanly
+            el.classList.remove('no-transition');
+        }
+
+        function typeWriter(el, speed) {
+            return new Promise(resolve => {
+                const raw = el.dataset.typewriter || '';
+                const parts = raw.split(/<br\s*\/?>/i);
+                el.innerHTML = '<span class="type-cursor"></span>';
+                const cursor = el.querySelector('.type-cursor');
+                let partIndex = 0;
+
+                function typePart() {
+                    if (partIndex >= parts.length) {
+                        cursor.remove();
+                        resolve();
+                        return;
+                    }
+                    const text = parts[partIndex].trim();
+                    let charIndex = 0;
+                    const span = document.createElement('span');
+                    el.insertBefore(span, cursor);
+
+                    function typeChar() {
+                        if (charIndex < text.length) {
+                            span.textContent += text[charIndex];
+                            charIndex++;
+                            setTimeout(typeChar, speed);
+                        } else {
+                            partIndex++;
+                            if (partIndex < parts.length) {
+                                el.insertBefore(document.createElement('br'), cursor);
+                            }
+                            typePart();
+                        }
+                    }
+                    typeChar();
+                }
+                typePart();
+            });
+        }
+
+        async function playSection1Intro() {
+            const photo = document.getElementById('s1-photo');
+            const title = document.getElementById('s1-title');
+            const subtitle = document.getElementById('s1-subtitle');
+            hideInstantly(photo);
+            title.innerHTML = '';
+            subtitle.innerHTML = '';
+            await wait(150);
+            photo.classList.add('show');
+            await wait(1100);
+            await typeWriter(title, 95);
+            await wait(300);
+            await typeWriter(subtitle, 45);
+        }
+
+        async function playSection2Intro() {
+            const photo = document.getElementById('s2-photo');
+            const quote = document.getElementById('s2-quote');
+            const iconEnd = document.getElementById('s2-icon-end');
+            hideInstantly(photo);
+            hideInstantly(iconEnd);
+            quote.innerHTML = '';
+            await wait(150);
+            photo.classList.add('show');
+            await wait(1150);
+            await typeWriter(quote, 34);
+            await wait(300);
+            iconEnd.classList.add('show');
+        }
+
+        async function playSection3Intro() {
+            const photo = document.getElementById('s3-photo');
+            const quote = document.getElementById('s3-quote');
+            const iconEnd = document.getElementById('s3-icon-end');
+            hideInstantly(photo);
+            hideInstantly(iconEnd);
+            quote.innerHTML = '';
+            await wait(150);
+            photo.classList.add('show');
+            await wait(1150);
+            await typeWriter(quote, 34);
+            await wait(300);
+            iconEnd.classList.add('show');
+        }
+
+        async function playSection4Intro() {
+            const items = sections[3].querySelectorAll('.gallery-item');
+            items.forEach(hideInstantly);
+            for (const item of items) {
+                await wait(900);
+                item.classList.add('show');
+            }
+        }
+
+        let previousIndex = null;
+
         function updateNavigation() {
             swipeWrapper.style.transform = `translateX(-${currentIndex * (100 / totalSections)}%)`;
+
+            // Update section fade/scale animation
+            sections.forEach((section, i) => {
+                section.classList.toggle('section-active', i === currentIndex);
+            });
 
             // Update Buttons
             prevBtn.disabled = currentIndex === 0;
@@ -477,7 +641,18 @@
             sectionLabel.textContent = labels[currentIndex];
             sectionLabel.style.opacity = '0';
             setTimeout(() => sectionLabel.style.opacity = '0.6', 50);
+
+            // Replay the photo-then-typed-text intro when (re)entering sections 1 or 2
+            if (currentIndex !== previousIndex) {
+                previousIndex = currentIndex;
+                if (currentIndex === 0) playSection1Intro();
+                if (currentIndex === 1) playSection2Intro();
+                if (currentIndex === 2) playSection3Intro();
+                if (currentIndex === 3) playSection4Intro();
+            }
         }
+
+        updateNavigation();
 
         prevBtn.addEventListener('click', () => {
             if (currentIndex > 0) {
