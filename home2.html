@@ -408,7 +408,7 @@
                         <div class="aspect-[3/4] bg-surface-container-high relative overflow-hidden">
                             <img class="w-full h-full object-cover"
                                 data-alt="A beautiful closeup of a multi-tiered birthday cake with pastel pink and lilac frosting, decorated with small gold edible sparkles. Soft bokeh lights in the background create a dreamlike atmosphere. The lighting is warm and inviting, emphasizing the celebration and joyful mood."
-                                src="foto/g3.jpeg">
+                                src="foto/g6.jpeg">
                         </div>
                     </div>
                     <!-- Memory 3 -->
@@ -704,12 +704,21 @@
         const musicToggle = document.getElementById('music-toggle');
         const musicToggleIcon = document.getElementById('music-toggle-icon');
 
+        // Keep the icon in sync with the audio element's actual state.
+        bgMusic.addEventListener('play', () => {
+            if (!bgMusic.muted) musicToggleIcon.textContent = 'pause';
+        });
+        bgMusic.addEventListener('pause', () => {
+            musicToggleIcon.textContent = 'play_arrow';
+        });
+
         musicToggle.addEventListener('click', () => {
             if (musicToggle.dataset.dragged === 'true') {
                 musicToggle.dataset.dragged = 'false';
                 return;
             }
-            if (bgMusic.paused) {
+            if (bgMusic.paused || bgMusic.muted) {
+                bgMusic.muted = false;
                 bgMusic.play().then(() => {
                     musicToggleIcon.textContent = 'pause';
                 }).catch(() => { });
@@ -762,20 +771,26 @@
         })(musicToggle);
 
         function startMusic() {
-            bgMusic.play().then(() => {
-                musicToggleIcon.textContent = 'pause';
-            }).catch(() => {
-                // Autoplay blocked; start on first user interaction instead.
-                const resume = () => {
+            // Browsers always allow autoplay when muted, so start silently right away...
+            bgMusic.muted = true;
+            bgMusic.play().catch(() => { });
+
+            // ...then unmute on the very first interaction of any kind (swipe, tap,
+            // scroll, keypress) so the music kicks in without requiring the user to
+            // deliberately find and press the music button.
+            const unmute = () => {
+                bgMusic.muted = false;
+                if (bgMusic.paused) {
                     bgMusic.play().then(() => {
                         musicToggleIcon.textContent = 'pause';
                     }).catch(() => { });
-                    document.removeEventListener('click', resume);
-                    document.removeEventListener('touchstart', resume);
-                };
-                document.addEventListener('click', resume, { once: true });
-                document.addEventListener('touchstart', resume, { once: true });
-            });
+                } else {
+                    musicToggleIcon.textContent = 'pause';
+                }
+                events.forEach(evt => document.removeEventListener(evt, unmute));
+            };
+            const events = ['pointerdown', 'touchstart', 'keydown', 'wheel', 'scroll'];
+            events.forEach(evt => document.addEventListener(evt, unmute, { once: true, passive: true }));
         }
 
         startMusic();
